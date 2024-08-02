@@ -40,15 +40,15 @@ void Matrix::resize(int r, int c) {
 
 Matrix Matrix::transpose() {
     // n x m to m x n
-    Matrix matrix_T;
-    matrix_T.resize(this->width(), this->height()); // note the dimension switch
+    Matrix result;
+    result.resize(this->width(), this->height()); // note the dimension switch
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
-            matrix_T.data[j][i] = this->data[i][j];
+            result.data[j][i] = this->data[i][j];
         }
     }
-    if (matrix_T.height() == this->width() && matrix_T.width() == this->height()) {
-        return matrix_T;
+    if (result.height() == this->width() && result.width() == this->height()) {
+        return result;
     }
     else {
         throw std::runtime_error("ERROR: Matrix sizes mismatch after transpose");
@@ -56,9 +56,28 @@ Matrix Matrix::transpose() {
 }
 
 Matrix Matrix::add(Matrix& other) {
+    Matrix result;
+    result.resize(this->height(), this->width()); // note the dimension switch
+    if (other.height() != this->height() || other.width() != this->width()) {
+        throw std::runtime_error("ERROR: Cannot add inequal matrices");
+    }
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
+            result.data[i][j] = this->data[i][j] + other.data[i][j];        
+        }
+    }
+    return result;
 }
 
 Matrix Matrix::mult(int scalar) {
+    Matrix result;
+    result.resize(this->height(), this->width()); // note the dimension switch
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
+            result.data[i][j] = this->data[i][j] * scalar;
+        }
+    }
+    return result;
 }
 
 Matrix Matrix::mult(Matrix& other) {

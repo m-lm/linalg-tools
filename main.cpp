@@ -11,6 +11,17 @@ void unittest() {
     original.display();
     Matrix transposed = original.transpose();
     transposed.display();
+
+    Matrix original2;
+    std::vector<int> b1 = {3,4,9};
+    std::vector<int> b2 = {2,8,0};
+    original2.data = {b1,b2};
+    original2.display();
+    Matrix added = transposed.add(original2);
+    added.display();
+
+    Matrix multed = added.mult(3);
+    multed.display();
 }
 
 int main() {
