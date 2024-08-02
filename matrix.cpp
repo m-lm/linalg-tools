@@ -8,12 +8,13 @@ Matrix::~Matrix() {
 }
 
 int Matrix::height() {
+    // Get number of rows
     return this->data.size();
 }
 
 int Matrix::width() {
+    // Get number of columns
     return this->data[0].size();
-
 }
 
 void Matrix::display() {
