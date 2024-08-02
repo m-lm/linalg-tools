@@ -7,14 +7,19 @@ Matrix::Matrix() {
 Matrix::~Matrix() {
 }
 
-int Matrix::size() {
+int Matrix::height() {
     return this->data.size();
+}
+
+int Matrix::width() {
+    return this->data[0].size();
+
 }
 
 void Matrix::display() {
     // Display the matrix data
-    for (int i = 0; i < this->data.size(); i++) {
-        for (int j = 0; j < this->data[0].size(); j++) {
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
             std::cout << this->data[i][j] << " ";
         }
         std::cout << std::endl;
@@ -36,13 +41,13 @@ void Matrix::resize(int r, int c) {
 Matrix Matrix::transpose() {
     // n x m to m x n
     Matrix matrix_T;
-    matrix_T.resize(this->data[0].size(), this->data.size()); // note the dimension switch
-    for (int i = 0; i < this->data.size(); i++) {
-        for (int j = 0; j < this->data[0].size(); j++) {
+    matrix_T.resize(this->width(), this->height()); // note the dimension switch
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
             matrix_T.data[j][i] = this->data[i][j];
         }
     }
-    if (matrix_T.size() == this->data[0].size() && matrix_T.data[0].size() == this->data.size()) {
+    if (matrix_T.height() == this->width() && matrix_T.width() == this->height()) {
         return matrix_T;
     }
     else {

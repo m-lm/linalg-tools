@@ -7,7 +7,8 @@ class Matrix {
     public:
         Matrix();
         virtual ~Matrix();
-        int size();
+        int height();
+        int width();
         void display();
         void resize(int r, int c);
         Matrix transpose();
