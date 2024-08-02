@@ -103,3 +103,17 @@ Matrix Matrix::mult(Matrix& other) {
     }
     return result;
 }
+
+Matrix Matrix::hada(Matrix& other) {
+    if (other.height() != this->height() || other.width() != this->width()) {
+        throw std::runtime_error("ERROR: Cannot Hadamard multiply inequal matrices");
+    }
+    Matrix result;
+        result.resize(this->height(), this->width());
+        for (int i = 0; i < this->height(); i++) {
+            for (int j = 0; j < this->width(); j++) {
+                result.data[i][j] = this->data[i][j] * other.data[i][j];        
+            }
+        }
+    return result;
+}

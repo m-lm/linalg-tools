@@ -2,6 +2,7 @@
 #define MATRIX
 #include <vector>
 
+// Note: prefer to use nonvoid functions to avoid in-place mutation
 class Matrix {
     protected:
     public:
@@ -15,6 +16,8 @@ class Matrix {
         Matrix add(Matrix& other);
         Matrix mult(int scalar); // scalar multiplication
         Matrix mult(Matrix& other); // matrix multiplication
+        Matrix hada(Matrix& other); // hadamard multiplication
+        Matrix kron(Matrix& other); // kronecker multiplication
         std::vector< std::vector <int> > data; // 2D matrix of ints
 };
 
