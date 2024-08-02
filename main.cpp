@@ -22,6 +22,9 @@ void unittest() {
 
     Matrix multed = added.mult(3);
     multed.display();
+
+    Matrix multed2 = original.mult(transposed);
+    multed2.display();
 }
 
 int main() {

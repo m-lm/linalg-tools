@@ -56,11 +56,11 @@ Matrix Matrix::transpose() {
 }
 
 Matrix Matrix::add(Matrix& other) {
-    Matrix result;
-    result.resize(this->height(), this->width()); // note the dimension switch
     if (other.height() != this->height() || other.width() != this->width()) {
         throw std::runtime_error("ERROR: Cannot add inequal matrices");
     }
+    Matrix result;
+    result.resize(this->height(), this->width()); // note the dimension switch
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
             result.data[i][j] = this->data[i][j] + other.data[i][j];        
@@ -81,4 +81,20 @@ Matrix Matrix::mult(int scalar) {
 }
 
 Matrix Matrix::mult(Matrix& other) {
+    // todo: implement strassen
+    if (this->width() != other.height()) {
+        throw std::runtime_error("ERROR: Cannot multiply incongruent matrices");
+    }
+    Matrix result;
+    result.resize(this->height(), other.width());
+    for (int i = 0; i < result.height(); i++) {
+        for (int j = 0; j < result.width(); j++) {
+            int sum = 0;
+            for (int k = 0; k < this->width(); k++) {
+                sum += this->data[i][k] * other.data[k][j];
+            }
+            result.data[i][j] = sum;
+        }
+    }
+    return result;
 }
