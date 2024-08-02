@@ -18,9 +18,10 @@ int Matrix::width() {
 
 void Matrix::display() {
     // Display the matrix data
+    const int spacing = 5; // based on largest number's digits
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
-            std::cout << this->data[i][j] << " ";
+            std::cout << this->data[i][j] << std::string(spacing - std::to_string(this->data[i][j]).length() % spacing, ' ');
         }
         std::cout << std::endl;
     }
@@ -28,7 +29,7 @@ void Matrix::display() {
 }
 
 void Matrix::resize(int r, int c) {
-    // Populate data matrix using row and column dimensions
+    // Populate data matrix using specified row and column dimensions
     this->data.clear();
     for (int i = 0; i < r; i++) {
         this->data.push_back({});
@@ -39,7 +40,7 @@ void Matrix::resize(int r, int c) {
 }
 
 Matrix Matrix::transpose() {
-    // n x m to m x n
+    // Transpose matrix from nxm to mxn; columns as rows and vice-versa
     Matrix result;
     result.resize(this->width(), this->height()); // note the dimension switch
     for (int i = 0; i < this->height(); i++) {
@@ -60,7 +61,7 @@ Matrix Matrix::add(Matrix& other) {
         throw std::runtime_error("ERROR: Cannot add inequal matrices");
     }
     Matrix result;
-    result.resize(this->height(), this->width()); // note the dimension switch
+    result.resize(this->height(), this->width());
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
             result.data[i][j] = this->data[i][j] + other.data[i][j];        
@@ -70,8 +71,9 @@ Matrix Matrix::add(Matrix& other) {
 }
 
 Matrix Matrix::mult(int scalar) {
+    // Multiply the elements of a matrix by a scalar constant
     Matrix result;
-    result.resize(this->height(), this->width()); // note the dimension switch
+    result.resize(this->height(), this->width());
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
             result.data[i][j] = this->data[i][j] * scalar;
@@ -81,8 +83,10 @@ Matrix Matrix::mult(int scalar) {
 }
 
 Matrix Matrix::mult(Matrix& other) {
+    // Multiply two matrices together, left-to-right (object X argument)
     // todo: implement strassen
     if (this->width() != other.height()) {
+        // operand matrices must be in form of (nxm) X (mxp) = (nxp) w.r.t dimensions
         throw std::runtime_error("ERROR: Cannot multiply incongruent matrices");
     }
     Matrix result;
