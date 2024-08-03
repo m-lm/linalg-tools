@@ -120,7 +120,7 @@ Matrix Matrix::hada(Matrix& other) {
 }
 
 Matrix Matrix::kron(Matrix& other) {
-    // Like matrix multiplication but without summation, per vector
+    // Iterative matrix multiplication without summation
     this->display();
     other.display();
     if (this->width() != other.height()) {
