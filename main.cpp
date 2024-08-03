@@ -25,6 +25,19 @@ void unittest() {
 
     Matrix multed2 = original.mult(transposed);
     multed2.display();
+
+    std::cout << "Kronecker" << std::endl;
+    Matrix kronned = original.kron(added);
+    kronned.display();
+
+    std::cout << "rowconcat" << std::endl;
+    Matrix new1;
+    new1.data = {v1, v2};
+    new1.display();
+    original2.display();
+    Matrix concatted = new1.row_concat(original2);
+    concatted.display();
+
 }
 
 int main() {

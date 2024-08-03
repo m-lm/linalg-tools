@@ -18,6 +18,7 @@ class Matrix {
         Matrix mult(Matrix& other); // matrix multiplication
         Matrix hada(Matrix& other); // hadamard multiplication
         Matrix kron(Matrix& other); // kronecker multiplication
+        Matrix row_concat(Matrix& other);
         std::vector< std::vector <int> > data; // 2D matrix of ints
 };
 

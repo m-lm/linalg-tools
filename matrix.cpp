@@ -105,15 +105,53 @@ Matrix Matrix::mult(Matrix& other) {
 }
 
 Matrix Matrix::hada(Matrix& other) {
+    // Like matrix addition but multiply
     if (other.height() != this->height() || other.width() != this->width()) {
         throw std::runtime_error("ERROR: Cannot Hadamard multiply inequal matrices");
     }
     Matrix result;
-        result.resize(this->height(), this->width());
-        for (int i = 0; i < this->height(); i++) {
-            for (int j = 0; j < this->width(); j++) {
-                result.data[i][j] = this->data[i][j] * other.data[i][j];        
+    result.resize(this->height(), this->width());
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
+            result.data[i][j] = this->data[i][j] * other.data[i][j];        
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::kron(Matrix& other) {
+    // Like matrix multiplication but without summation, per vector
+    this->display();
+    other.display();
+    if (this->width() != other.height()) {
+        throw std::runtime_error("ERROR: Cannot Kronecker multiply incongruent matrices");
+    }
+    Matrix result;
+    result.resize(this->height(), other.width());
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
+            result.data[i][j] = this->data[0][i] * other.data[j][0];        
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::row_concat(Matrix& other) {
+    if (this->height() != other.height()) {
+        // needs same number of rows
+        throw std::runtime_error("ERROR: Cannot horizontally concatenate matrices with different row sizes");
+    }
+    Matrix result;
+    result.resize(this->height(), other.width() + this->width());
+    for (int i = 0; i < this->width(); i++) {
+        for (int j = 0; j < other.width() + this->width(); j++) {
+            if (j < this->width()) {
+                result.data[i][j] = this->data[i][j];
+            }
+            else {
+                result.data[i][j] = other.data[i][j - this->width()];
             }
         }
+    }
     return result;
 }
