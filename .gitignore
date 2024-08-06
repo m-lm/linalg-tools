@@ -1,5 +1,6 @@
 .vscode
 .DS_Store
+.zed
 
 # Prerequisites
 *.d
