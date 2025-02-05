@@ -1,3 +1,3 @@
-# ai-tools 
+# linalg-tools
 
-A collection of simple implementations of artificial intelligence algorithms written from scratch in C++ for learning purposes.
+A collection of Linear Algebra tools implemented in C++
