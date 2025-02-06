@@ -10,8 +10,8 @@ class Matrix {
         virtual ~Matrix();
         Matrix operator+(const Matrix& other);
         Matrix operator*(const Matrix& other);
-        int height() const;
-        int width() const;
+        int rows() const;
+        int columns() const;
         void display() const;
         void resize(int r, int c);
         Matrix transpose();

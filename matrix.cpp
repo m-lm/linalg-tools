@@ -15,12 +15,12 @@ Matrix Matrix::operator*(const Matrix& other) {
     return this->multiply(other);
 }
 
-int Matrix::height() const {
+int Matrix::rows() const {
     // Get number of rows
     return this->data.size();
 }
 
-int Matrix::width() const {
+int Matrix::columns() const {
     // Get number of columns
     return this->data[0].size();
 }
@@ -28,8 +28,8 @@ int Matrix::width() const {
 void Matrix::display() const {
     // Display the matrix data
     const int spacing = 5; // based on largest number's digits
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             std::cout << this->data[i][j] << std::string(spacing - std::to_string(this->data[i][j]).length() % spacing, ' ');
         }
         std::cout << std::endl;
@@ -51,9 +51,9 @@ void Matrix::resize(int r, int c) {
 Matrix Matrix::transpose() {
     // Transpose matrix from nxm to mxn; columns as rows and vice-versa
     Matrix result;
-    result.resize(this->width(), this->height()); // note the dimension switch
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    result.resize(this->columns(), this->rows()); // note the dimension switch
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             result.data[j][i] = this->data[i][j];
         }
     }
@@ -61,13 +61,13 @@ Matrix Matrix::transpose() {
 }
 
 Matrix Matrix::add(const Matrix& other) {
-    if (other.height() != this->height() || other.width() != this->width()) {
+    if (other.rows() != this->rows() || other.columns() != this->columns()) {
         throw std::runtime_error("ERROR: Cannot add inequal matrices");
     }
     Matrix result;
-    result.resize(this->height(), this->width());
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    result.resize(this->rows(), this->columns());
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             result.data[i][j] = this->data[i][j] + other.data[i][j];        
         }
     }
@@ -77,9 +77,9 @@ Matrix Matrix::add(const Matrix& other) {
 Matrix Matrix::multiply(const int scalar) {
     // Multiply the elements of a matrix by a scalar constant
     Matrix result;
-    result.resize(this->height(), this->width());
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    result.resize(this->rows(), this->columns());
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             result.data[i][j] = this->data[i][j] * scalar;
         }
     }
@@ -89,16 +89,16 @@ Matrix Matrix::multiply(const int scalar) {
 Matrix Matrix::multiply(const Matrix& other) {
     // Multiply two matrices together, left-to-right (object X argument)
     // todo: implement strassen
-    if (this->width() != other.height()) {
+    if (this->columns() != other.rows()) {
         // operand matrices must be in form of (nxm) X (mxp) = (nxp) w.r.t dimensions
         throw std::runtime_error("ERROR: Cannot multiply incongruent matrices");
     }
     Matrix result;
-    result.resize(this->height(), other.width());
-    for (int i = 0; i < result.height(); i++) {
-        for (int j = 0; j < result.width(); j++) {
+    result.resize(this->rows(), other.columns());
+    for (int i = 0; i < result.rows(); i++) {
+        for (int j = 0; j < result.columns(); j++) {
             int sum = 0;
-            for (int k = 0; k < this->width(); k++) {
+            for (int k = 0; k < this->columns(); k++) {
                 sum += this->data[i][k] * other.data[k][j];
             }
             result.data[i][j] = sum;
@@ -109,13 +109,13 @@ Matrix Matrix::multiply(const Matrix& other) {
 
 Matrix Matrix::hadamard(const Matrix& other) {
     // Like matrix addition but multiply
-    if (other.height() != this->height() || other.width() != this->width()) {
+    if (other.rows() != this->rows() || other.columns() != this->columns()) {
         throw std::runtime_error("ERROR: Cannot Hadamard multiply inequal matrices");
     }
     Matrix result;
-    result.resize(this->height(), this->width());
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    result.resize(this->rows(), this->columns());
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             result.data[i][j] = this->data[i][j] * other.data[i][j];        
         }
     }
@@ -125,12 +125,12 @@ Matrix Matrix::hadamard(const Matrix& other) {
 Matrix Matrix::kronecker(const Matrix& other) {
     // Iterative matrix multiplication without summation
     Matrix result;
-    result.resize(this->height() * other.height(), this->width() * other.width());
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
-            for (int k = 0; k < other.height(); k++) {
-                for (int l = 0; l < other.width(); l++) {
-                    result.data[i * other.height() + k][j * other.width() + l] = this->data[i][j] * other.data[k][l];        
+    result.resize(this->rows() * other.rows(), this->columns() * other.columns());
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
+            for (int k = 0; k < other.rows(); k++) {
+                for (int l = 0; l < other.columns(); l++) {
+                    result.data[i * other.rows() + k][j * other.columns() + l] = this->data[i][j] * other.data[k][l];        
                 }
             }
         }
@@ -139,18 +139,18 @@ Matrix Matrix::kronecker(const Matrix& other) {
 }
 
 Matrix Matrix::row_concat(const Matrix& other) {
-    if (this->height() != other.height()) {
+    if (this->rows() != other.rows()) {
         // needs same number of rows
         throw std::runtime_error("ERROR: Cannot horizontally concatenate matrices with different row sizes");
     }
     Matrix result;
-    result.resize(this->height(), other.width() + this->width());
-    for (int i = 0; i < this->height(); i++) {
-        for (int j = 0; j < this->width(); j++) {
+    result.resize(this->rows(), other.columns() + this->columns());
+    for (int i = 0; i < this->rows(); i++) {
+        for (int j = 0; j < this->columns(); j++) {
             result.data[i][j] = this->data[i][j];
         }
-        for (int j = 0; j < other.width(); j++) {
-            result.data[i][j + this->width()] = other.data[i][j];
+        for (int j = 0; j < other.columns(); j++) {
+            result.data[i][j + this->columns()] = other.data[i][j];
         }
     }
     return result;
