@@ -9,6 +9,7 @@ class Matrix {
         Matrix();
         virtual ~Matrix();
         Matrix operator+(const Matrix& other);
+        Matrix operator*(const Matrix& other);
         int height() const;
         int width() const;
         void display() const;

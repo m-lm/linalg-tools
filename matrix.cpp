@@ -11,6 +11,10 @@ Matrix Matrix::operator+(const Matrix& other) {
     return this->add(other);
 }
 
+Matrix Matrix::operator*(const Matrix& other) {
+    return this->multiply(other);
+}
+
 int Matrix::height() const {
     // Get number of rows
     return this->data.size();
