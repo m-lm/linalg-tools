@@ -18,16 +18,18 @@ void unittest() {
     original2.data = {b1,b2};
     original2.display();
     Matrix added = transposed.add(original2);
+    Matrix added2 = transposed + original2;
     added.display();
+    added2.display();
 
-    Matrix multed = added.mult(3);
+    Matrix multed = added.multiply(3);
     multed.display();
 
-    Matrix multed2 = original.mult(transposed);
+    Matrix multed2 = original.multiply(transposed);
     multed2.display();
 
     std::cout << "Kronecker" << std::endl;
-    Matrix kronned = original.kron(added);
+    Matrix kronned = original.kronecker(added);
     kronned.display();
 
     std::cout << "rowconcat" << std::endl;

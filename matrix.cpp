@@ -7,17 +7,21 @@ Matrix::Matrix() {
 Matrix::~Matrix() {
 }
 
-int Matrix::height() {
+Matrix Matrix::operator+(const Matrix& other) {
+    return this->add(other);
+}
+
+int Matrix::height() const {
     // Get number of rows
     return this->data.size();
 }
 
-int Matrix::width() {
+int Matrix::width() const {
     // Get number of columns
     return this->data[0].size();
 }
 
-void Matrix::display() {
+void Matrix::display() const {
     // Display the matrix data
     const int spacing = 5; // based on largest number's digits
     for (int i = 0; i < this->height(); i++) {
@@ -49,9 +53,10 @@ Matrix Matrix::transpose() {
             result.data[j][i] = this->data[i][j];
         }
     }
+    return result;
 }
 
-Matrix Matrix::add(Matrix& other) {
+Matrix Matrix::add(const Matrix& other) {
     if (other.height() != this->height() || other.width() != this->width()) {
         throw std::runtime_error("ERROR: Cannot add inequal matrices");
     }
@@ -65,7 +70,7 @@ Matrix Matrix::add(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::multiply(int scalar) {
+Matrix Matrix::multiply(const int scalar) {
     // Multiply the elements of a matrix by a scalar constant
     Matrix result;
     result.resize(this->height(), this->width());
@@ -77,7 +82,7 @@ Matrix Matrix::multiply(int scalar) {
     return result;
 }
 
-Matrix Matrix::multiply(Matrix& other) {
+Matrix Matrix::multiply(const Matrix& other) {
     // Multiply two matrices together, left-to-right (object X argument)
     // todo: implement strassen
     if (this->width() != other.height()) {
@@ -98,7 +103,7 @@ Matrix Matrix::multiply(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::hadamard(Matrix& other) {
+Matrix Matrix::hadamard(const Matrix& other) {
     // Like matrix addition but multiply
     if (other.height() != this->height() || other.width() != this->width()) {
         throw std::runtime_error("ERROR: Cannot Hadamard multiply inequal matrices");
@@ -113,7 +118,7 @@ Matrix Matrix::hadamard(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::kronecker(Matrix& other) {
+Matrix Matrix::kronecker(const Matrix& other) {
     // Iterative matrix multiplication without summation
     Matrix result;
     result.resize(this->height() * other.height(), this->width() * other.width());
@@ -129,7 +134,7 @@ Matrix Matrix::kronecker(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::row_concat(Matrix& other) {
+Matrix Matrix::row_concat(const Matrix& other) {
     if (this->height() != other.height()) {
         // needs same number of rows
         throw std::runtime_error("ERROR: Cannot horizontally concatenate matrices with different row sizes");
