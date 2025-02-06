@@ -65,7 +65,7 @@ Matrix Matrix::add(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::mult(int scalar) {
+Matrix Matrix::multiply(int scalar) {
     // Multiply the elements of a matrix by a scalar constant
     Matrix result;
     result.resize(this->height(), this->width());
@@ -77,7 +77,7 @@ Matrix Matrix::mult(int scalar) {
     return result;
 }
 
-Matrix Matrix::mult(Matrix& other) {
+Matrix Matrix::multiply(Matrix& other) {
     // Multiply two matrices together, left-to-right (object X argument)
     // todo: implement strassen
     if (this->width() != other.height()) {
@@ -115,16 +115,15 @@ Matrix Matrix::hadamard(Matrix& other) {
 
 Matrix Matrix::kronecker(Matrix& other) {
     // Iterative matrix multiplication without summation
-    this->display();
-    other.display();
-    if (this->width() != other.height()) {
-        throw std::runtime_error("ERROR: Cannot Kronecker multiply incongruent matrices");
-    }
     Matrix result;
-    result.resize(this->height(), other.width());
+    result.resize(this->height() * other.height(), this->width() * other.width());
     for (int i = 0; i < this->height(); i++) {
         for (int j = 0; j < this->width(); j++) {
-            result.data[i][j] = this->data[0][i] * other.data[j][0];        
+            for (int k = 0; k < other.height(); k++) {
+                for (int l = 0; l < other.width(); l++) {
+                    result.data[i * other.height() + k][j * other.width() + l] = this->data[i][j] * other.data[k][l];        
+                }
+            }
         }
     }
     return result;
@@ -137,14 +136,12 @@ Matrix Matrix::row_concat(Matrix& other) {
     }
     Matrix result;
     result.resize(this->height(), other.width() + this->width());
-    for (int i = 0; i < this->width(); i++) {
-        for (int j = 0; j < other.width() + this->width(); j++) {
-            if (j < this->width()) {
-                result.data[i][j] = this->data[i][j];
-            }
-            else {
-                result.data[i][j] = other.data[i][j - this->width()];
-            }
+    for (int i = 0; i < this->height(); i++) {
+        for (int j = 0; j < this->width(); j++) {
+            result.data[i][j] = this->data[i][j];
+        }
+        for (int j = 0; j < other.width(); j++) {
+            result.data[i][j + this->width()] = other.data[i][j];
         }
     }
     return result;
