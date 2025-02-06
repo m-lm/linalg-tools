@@ -49,12 +49,6 @@ Matrix Matrix::transpose() {
             result.data[j][i] = this->data[i][j];
         }
     }
-    if (result.height() == this->width() && result.width() == this->height()) {
-        return result;
-    }
-    else {
-        throw std::runtime_error("ERROR: Matrix sizes mismatch after transpose");
-    }
 }
 
 Matrix Matrix::add(Matrix& other) {
@@ -104,7 +98,7 @@ Matrix Matrix::mult(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::hada(Matrix& other) {
+Matrix Matrix::hadamard(Matrix& other) {
     // Like matrix addition but multiply
     if (other.height() != this->height() || other.width() != this->width()) {
         throw std::runtime_error("ERROR: Cannot Hadamard multiply inequal matrices");
@@ -119,7 +113,7 @@ Matrix Matrix::hada(Matrix& other) {
     return result;
 }
 
-Matrix Matrix::kron(Matrix& other) {
+Matrix Matrix::kronecker(Matrix& other) {
     // Iterative matrix multiplication without summation
     this->display();
     other.display();
